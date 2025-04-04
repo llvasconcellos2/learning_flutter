@@ -1,19 +1,29 @@
 class WeatherModel {
-  String getWeatherIcon(int condition) {
+  String getIcon(int condition) {
     if (condition < 300) {
-      return '🌩';
+      return 'images/tstorm3.png';
+      //return '🌩';
     } else if (condition < 400) {
-      return '🌧';
+      return 'images/light_rain.png';
+      // return '🌧';
     } else if (condition < 600) {
-      return '☔️';
+      return 'images/shower3.png';
+      //return '☔️';
     } else if (condition < 700) {
-      return '☃️';
+      return 'images/snow5.png';
+      // return '☃️';
     } else if (condition < 800) {
-      return '🌫';
+      return 'images/fog.png';
+      // return '🌫';
     } else if (condition == 800) {
-      return '☀️';
-    } else if (condition <= 804) {
-      return '☁️';
+      return 'images/sunny.png';
+      // return '☀️';
+    } else if (condition == 801) {
+      return 'images/cloudy2.png';
+      // return '☁️';
+    } else if (condition >= 802) {
+      return 'images/overcast.png';
+      // return '☁️';
     } else {
       return '🤷‍';
     }
