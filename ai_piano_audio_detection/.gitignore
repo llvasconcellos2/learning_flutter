@@ -1,0 +1,13 @@
+.DS_Store
+.dart_tool/
+
+.packages
+.pub/
+
+build/
+
+android/src/main/assets
+.idea/vcs.xml
+*.tflite
+*.plist
+*.pbxproj
