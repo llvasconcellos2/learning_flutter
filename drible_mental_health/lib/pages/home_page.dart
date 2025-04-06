@@ -180,115 +180,118 @@ class _HomePageState extends State<HomePage> {
 
             SizedBox(height: 25),
             Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Container(
-                  padding: EdgeInsets.all(25),
+              child: Container(
+                padding: EdgeInsets.all(25),
+                decoration: BoxDecoration(
                   color: Colors.grey.shade300,
-                  child: Center(
-                    child: Column(
-                      children: [
-                        // Exercise heading
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                  ),
+                ),
+                child: Center(
+                  child: Column(
+                    children: [
+                      // Exercise heading
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Exercícios',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Icon(Icons.more_horiz),
+                        ],
+                      ),
+
+                      SizedBox(height: 20),
+
+                      //Listview of exercises
+                      Expanded(
+                        child: ListView(
                           children: [
-                            Text(
-                              'Exercícios',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 12.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: ListTile(
+                                  leading: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.orange,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    padding: EdgeInsets.all(16),
+                                    child: Icon(
+                                      Icons.favorite,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  title: Text('Habilidades de Fala'),
+                                  subtitle: Text('15 Exercícios'),
+                                  trailing: Icon(Icons.more_horiz),
+                                ),
                               ),
                             ),
-                            Icon(Icons.more_horiz),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 12.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: ListTile(
+                                  leading: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    padding: EdgeInsets.all(16),
+                                    child: Icon(
+                                      Icons.person,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  title: Text('Habilidades de Leitura'),
+                                  subtitle: Text('8 Exercícios'),
+                                  trailing: Icon(Icons.more_horiz),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 12.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: ListTile(
+                                  leading: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.pink,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    padding: EdgeInsets.all(16),
+                                    child: Icon(
+                                      Icons.star,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  title: Text('Habilidades de Escrita'),
+                                  subtitle: Text('15 Exercícios'),
+                                  trailing: Icon(Icons.more_horiz),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
-
-                        SizedBox(height: 20),
-
-                        //Listview of exercises
-                        Expanded(
-                          child: ListView(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 12.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  child: ListTile(
-                                    leading: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.orange,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      padding: EdgeInsets.all(16),
-                                      child: Icon(
-                                        Icons.favorite,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    title: Text('Habilidades de Fala'),
-                                    subtitle: Text('15 Exercícios'),
-                                    trailing: Icon(Icons.more_horiz),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 12.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  child: ListTile(
-                                    leading: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.green,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      padding: EdgeInsets.all(16),
-                                      child: Icon(
-                                        Icons.person,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    title: Text('Habilidades de Leitura'),
-                                    subtitle: Text('8 Exercícios'),
-                                    trailing: Icon(Icons.more_horiz),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 12.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  child: ListTile(
-                                    leading: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.pink,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      padding: EdgeInsets.all(16),
-                                      child: Icon(
-                                        Icons.star,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    title: Text('Habilidades de Escrita'),
-                                    subtitle: Text('15 Exercícios'),
-                                    trailing: Icon(Icons.more_horiz),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
