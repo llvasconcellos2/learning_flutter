@@ -1,7 +1,40 @@
 import 'package:flutter/material.dart';
 
-class BMWPage extends StatelessWidget {
+class BMWPage extends StatefulWidget {
   const BMWPage({super.key});
+
+  @override
+  State<BMWPage> createState() => _BMWPageState();
+}
+
+class _BMWPageState extends State<BMWPage> {
+  List<String> imageList = [
+    // 'https://production.autoforce.com/uploads/version/profile_image/10419/model_middle_webp_comprar-competition_d914780934.png.webp',
+    // 'https://prod.cosy.bmw.cloud/bmwweb/cosySec?COSY-EU-100-7331c9Nv2Z7d5yKlHS91AmhrAWVxEaMqjmAZnjCrmQvi3D%25zWUM1PdqJujmBY0JuSDOPRQpSxIhkWExHS9gwyljT5lkQM37fNwDTjHBDcKkPPox9syh3b4gZqmazOSJ5jqLQ7ayV8x6nw1pCaJXgtUDlkvns7sY7OVK3dBzcBqrhpeqKCGZIyRscCw29cvnwp9QAuhFyqlABKupuV8FeWS6SBBKMPVYps5WhbNm6MIPo90yYh6bHi4TmtY9%25wc3y7ciftxdTCqw178zBQltECUke3Z7slGAM9QCrXpF7islZQ6KCZfXRaYWlRwQ5nmPXiJagOybQwGnvIT9arOO2B3in1vIjedwO4NBDMztIcgeqhk7BRKMLoACeKAhJHFlM52ou%25KXhgoHSfWQtSq%25V1Pa7RSfNEbnCBr10s9Ol89E4riIXU2scZwBQGcrxRteaEzZ857Mns7RUgChOrM5GvloqLggp2XHLVGv6jQ%25JTQ2YDafu3Rjmqn1SdiDyLOEVtKqTJIsN7CL3uBr0SPJdSeZ4GbuzVMRPs0SkNh5byyVA0og9QNNF4HvifB0Kc%252w1u4WxfjxLzcP81D8wexbUEqUtc89GsLGDeUiprJpXLGw6Zu6GqptYRSYNc67m5VmyIYCygNyT2mlTv0TCkyX3243lfTQdjcdXQ3azDxOYddnkq8IiHzOSs5m%2565ezICP4Wsduk45IoFSr86JdoFXCp5l8snYrsv6OgHqvZ2aKBf',
+    'https://www.webmotors.com.br/imagens/prod/348844/BMW_M3_3.0_I6_TWINTURBO_GASOLINA_COMPETITION_TRACK_STEPTRONIC_34884414314411433.png?s=fill&w=440&h=330&q=80&t=true',
+    'https://www.webmotors.com.br/imagens/prod/348844/BMW_M3_3.0_I6_TWINTURBO_GASOLINA_COMPETITION_TRACK_STEPTRONIC_34884414314735879.png?s=fill&w=440&h=330&q=80&t=true',
+    'https://www.webmotors.com.br/imagens/prod/348844/BMW_M3_3.0_I6_TWINTURBO_GASOLINA_COMPETITION_TRACK_STEPTRONIC_34884414314865918.png?s=fill&w=440&h=330&q=80&t=true',
+    'https://www.webmotors.com.br/imagens/prod/348844/BMW_M3_3.0_I6_TWINTURBO_GASOLINA_COMPETITION_TRACK_STEPTRONIC_34884414314545290.png?s=fill&w=440&h=330&q=80&t=true',
+    'https://www.webmotors.com.br/imagens/prod/348844/BMW_M3_3.0_I6_TWINTURBO_GASOLINA_COMPETITION_TRACK_STEPTRONIC_34884414314818987.png?s=fill&w=440&h=330&q=80&t=true',
+    'https://www.webmotors.com.br/imagens/prod/348844/BMW_M3_3.0_I6_TWINTURBO_GASOLINA_COMPETITION_TRACK_STEPTRONIC_34884414314693969.png?s=fill&w=440&h=330&q=80&t=true',
+    'https://www.webmotors.com.br/imagens/prod/348844/BMW_M3_3.0_I6_TWINTURBO_GASOLINA_COMPETITION_TRACK_STEPTRONIC_34884414314776238.png?s=fill&w=440&h=330&q=80&t=true',
+    'https://www.webmotors.com.br/imagens/prod/348844/BMW_M3_3.0_I6_TWINTURBO_GASOLINA_COMPETITION_TRACK_STEPTRONIC_34884414314596195.png?s=fill&w=440&h=330&q=80&t=true',
+  ];
+  int imageIndex = 0;
+
+  void changeImage(String direction) {
+    if (direction == 'forward') {
+      imageIndex++;
+      if (imageIndex > imageList.length - 1) {
+        imageIndex = 0;
+      }
+    } else {
+      imageIndex--;
+      if (imageIndex < 0) {
+        imageIndex = imageList.length - 1;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +46,7 @@ class BMWPage extends StatelessWidget {
             Container(
               color: Colors.blueGrey,
               child: Image.network(
-                'https://prod.cosy.bmw.cloud/bmwweb/cosySec?COSY-EU-100-7331c9Nv2Z7d5yKlHS91AmhrAWVxEaMqjmAZnjCrmQvi3D%25zWUM1PdqJujmBY0JuSDOPRQpSxIhkWExHS9gwyljT5lkQM37fNwDTjHBDcKkPPox9syh3b4gZqmazOSJ5jqLQ7ayV8x6nw1pCaJXgtUDlkvns7sY7OVK3dBzcBqrhpeqKCGZIyRscCw29cvnwp9QAuhFyqlABKupuV8FeWS6SBBKMPVYps5WhbNm6MIPo90yYh6bHi4TmtY9%25wc3y7ciftxdTCqw178zBQltECUke3Z7slGAM9QCrXpF7islZQ6KCZfXRaYWlRwQ5nmPXiJagOybQwGnvIT9arOO2B3in1vIjedwO4NBDMztIcgeqhk7BRKMLoACeKAhJHFlM52ou%25KXhgoHSfWQtSq%25V1Pa7RSfNEbnCBr10s9Ol89E4riIXU2scZwBQGcrxRteaEzZ857Mns7RUgChOrM5GvloqLggp2XHLVGv6jQ%25JTQ2YDafu3Rjmqn1SdiDyLOEVtKqTJIsN7CL3uBr0SPJdSeZ4GbuzVMRPs0SkNh5byyVA0og9QNNF4HvifB0Kc%252w1u4WxfjxLzcP81D8wexbUEqUtc89GsLGDeUiprJpXLGw6Zu6GqptYRSYNc67m5VmyIYCygNyT2mlTv0TCkyX3243lfTQdjcdXQ3azDxOYddnkq8IiHzOSs5m%2565ezICP4Wsduk45IoFSr86JdoFXCp5l8snYrsv6OgHqvZ2aKBf',
+                imageList[imageIndex],
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
@@ -32,6 +65,32 @@ class BMWPage extends StatelessWidget {
               child: IconButton(
                 onPressed: () {},
                 icon: Icon(Icons.favorite, color: Colors.red, size: 50),
+              ),
+            ),
+            Positioned(
+              top: 200,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        changeImage('backward');
+                      });
+                    },
+                    child: Icon(Icons.arrow_back_ios, size: 30),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        changeImage('forward');
+                      });
+                    },
+                    child: Icon(Icons.arrow_forward_ios, size: 30),
+                  ),
+                ],
               ),
             ),
           ],

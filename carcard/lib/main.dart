@@ -1,3 +1,4 @@
+import 'package:carcard/input_widgets_page.dart';
 import 'package:carcard/profile_page.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData.dark(),
-      home: Scaffold(body: PageView(children: [ProfilePage(), BMWPage()])),
+      home: Scaffold(
+        body: PageView(
+          children: [InputWidgetsPage(), BMWPage(), ProfilePage()],
+        ),
+      ),
     );
   }
 }
