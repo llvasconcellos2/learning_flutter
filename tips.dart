@@ -45,3 +45,53 @@ calculateArea({required double width = 0.0, required double height = 0.0}) => wi
 
 final class Animal {}
 base class Cat extends Animal {}
+
+
+
+
+
+
+enum MesEnum {
+  janeiro('Janeiro'),
+  fevereiro('Fevereiro'),
+  marco('Março'),
+  abril('Abril'),
+  maio('Maio'),
+  junho('Junho'),
+  julho('Julho'),
+  agosto('Agosto'),
+  setembro('Setembro'),
+  outubro('Outubro'),
+  novembro('Novembro'),
+  dezembro('Dezembro');
+
+  final String description;
+
+  const MesEnum(this.description);
+}
+
+String pegarMes(int mes) {
+  final result = switch (mes) {
+    1 => MesEnum.janeiro.description,
+    2 => MesEnum.fevereiro.description,
+    3 => MesEnum.marco.description,
+    4 => MesEnum.abril.description,
+    5 => MesEnum.maio.description,
+    6 => MesEnum.junho.description,
+    7 => MesEnum.julho.description,
+    8 => MesEnum.agosto.description,
+    9 => MesEnum.setembro.description,
+    10 => MesEnum.outubro.description,
+    11 => MesEnum.novembro.description,
+    12 => MesEnum.dezembro.description,
+    _ => 'Mês inválido', //Valor padrão, substitui o default
+  };
+  return result;
+}
+
+void main() {
+  int mes = 1;
+  String result = pegarMes(mes);
+
+  print(result);
+}
