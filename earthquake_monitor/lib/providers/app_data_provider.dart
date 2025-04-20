@@ -4,6 +4,8 @@ import 'package:earthquake_monitor/models/earthquake_model.dart';
 import 'package:earthquake_monitor/utils/helper_functions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
 class AppDataProvider extends ChangeNotifier {
@@ -15,11 +17,12 @@ class AppDataProvider extends ChangeNotifier {
   String _endtime = '';
   OrderBy _orderBy = OrderBy.magnitude;
   String? _currentCity;
+  String? _cityInfo;
   double _maxRadiusKm = 500;
   final double _maxRadiusKmThreshold = 20001.6;
   bool _shouldUseLocation = false;
   final String _format = 'geojson';
-  final int _minmagnitude = 4;
+  int _minmagnitude = 4;
   final int _limit = 500;
 
   Map<String, dynamic> queryParams = {};
@@ -32,7 +35,27 @@ class AppDataProvider extends ChangeNotifier {
 
   String get starttime => _starttime;
 
+  int get minmagnitude => _minmagnitude;
+
+  set minmagnitude(int value){
+    _minmagnitude = value;
+    _setQueryParams();
+    notifyListeners();
+  }
+
+  set starttime(String time) {
+    _starttime = time;
+    _setQueryParams();
+    notifyListeners();
+  }
+
   String get endtime => _endtime;
+
+  set endtime(String time) {
+    _endtime = time;
+    _setQueryParams();
+    notifyListeners();
+  }
 
   OrderBy get orderBy => _orderBy;
 
@@ -56,11 +79,58 @@ class AppDataProvider extends ChangeNotifier {
 
   String? get currentCity => _currentCity;
 
+  String? get cityInfo => _cityInfo;
+
   double get maxRadiusKm => _maxRadiusKm;
+
+  set maxRadiusKm(double value) {
+    _maxRadiusKm = value;
+    _setQueryParams();
+    notifyListeners();
+  }
 
   double get maxRadiusKmThreshold => _maxRadiusKmThreshold;
 
   bool get shouldUseLocation => _shouldUseLocation;
+
+  void getLocation(bool value) async {
+    _shouldUseLocation = value;
+    notifyListeners();
+    if (value) {
+      final position = await _determinePosition();
+      _latitude = position.latitude;
+      _longitude = position.longitude;
+      _maxRadiusKm = 500;
+      _setQueryParams();
+      await getCurrentCity(position);
+      getEarthquakeData();
+    } else {
+      _latitude = 0;
+      _longitude = 0;
+      _maxRadiusKm = _maxRadiusKmThreshold;
+      _currentCity = null;
+      _setQueryParams();
+    }
+    notifyListeners();
+  }
+
+  Future<void> getCurrentCity(Position position) async {
+    try {
+      List<Placemark> placeMarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+      if (placeMarks.isNotEmpty) {
+        _currentCity = placeMarks.first.subAdministrativeArea;
+        _cityInfo =
+            '${placeMarks.first.administrativeArea} - ${placeMarks.first.country}';
+      }
+    } catch (err) {
+      if (kDebugMode) {
+        print(err);
+      }
+    }
+  }
 
   bool get hasDataLoaded => earthquakeModel != null;
 
@@ -88,7 +158,6 @@ class AppDataProvider extends ChangeNotifier {
 
   Future<void> getEarthquakeData() async {
     earthquakeModel = null;
-    notifyListeners();
     final uri = Uri.https(baseUrl.authority, baseUrl.path, queryParams);
     try {
       final response = await http.get(uri);
@@ -124,4 +193,46 @@ enum OrderBy {
   final String label;
 
   const OrderBy(this.value, this.label);
+}
+
+/// Determine the current position of the device.
+///
+/// When the location services are not enabled or permissions
+/// are denied the `Future` will return an error.
+Future<Position> _determinePosition() async {
+  bool serviceEnabled;
+  LocationPermission permission;
+
+  // Test if location services are enabled.
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    // Location services are not enabled don't continue
+    // accessing the position and request users of the
+    // App to enable the location services.
+    return Future.error('Location services are disabled.');
+  }
+
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      // Permissions are denied, next time you could try
+      // requesting permissions again (this is also where
+      // Android's shouldShowRequestPermissionRationale
+      // returned true. According to Android guidelines
+      // your App should show an explanatory UI now.
+      return Future.error('Location permissions are denied');
+    }
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    // Permissions are denied forever, handle appropriately.
+    return Future.error(
+      'Location permissions are permanently denied, we cannot request permissions.',
+    );
+  }
+
+  // When we reach here, permissions are granted and we can
+  // continue accessing the position of the device.
+  return await Geolocator.getCurrentPosition();
 }

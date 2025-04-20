@@ -1,7 +1,13 @@
+import 'dart:io';
+
+import 'package:earthquake_monitor/pages/settings_page.dart';
 import 'package:earthquake_monitor/providers/app_data_provider.dart';
 import 'package:earthquake_monitor/utils/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+
+import '../models/earthquake_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -55,10 +61,28 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  _openMap(Geometry geo) async {
+    String url = '${geo.coordinates?[1]},${geo.coordinates?[0]}';
+
+    if (Platform.isAndroid) {
+      url = 'geo:0,0?q=$url';
+    } else if (Platform.isIOS) {
+      url = 'https://maps.apple.com/?q=$url';
+    } else {
+      url = 'https://maps.google.com/?q=$url';
+    }
+
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
+    } else {
+      showMsg(context, 'Não é possível executar esta tarefa.');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<AppDataProvider>(context, listen: false);
     return Scaffold(
+      backgroundColor: Colors.blueGrey.shade800,
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -67,6 +91,15 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         title: Text('Epicentro'),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SettingsPage()),
+              );
+            },
+            icon: Icon(Icons.settings),
+          ),
           IconButton(onPressed: _showSortingDialog, icon: Icon(Icons.sort)),
         ],
       ),
@@ -84,19 +117,40 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: (context, index) {
               final data =
                   provider.earthquakeModel!.features![index].properties;
-              return ListTile(
-                title: Text(data!.place ?? data.title ?? 'Unknown'),
-                trailing: Column(
-                  children: [
-                    Text(getFormatedDateTime(data.time!, 'dd/MM/yyyy')),
-                    Text(getFormatedDateTime(data.time!, 'HH:mm')),
-                  ],
-                ),
-                leading: Chip(
-                  backgroundColor:
-                  // (data.alert != null) ??
-                  provider.getAlertColor(data.alert ?? ''),
-                  label: Text(data.mag.toString()),
+              return GestureDetector(
+                onTap: () {
+                  _openMap(
+                    provider.earthquakeModel!.features![index].geometry!,
+                  );
+                },
+                child: ListTile(
+                  title: Text(
+                    translate(data!.place ?? data.title ?? 'Unknown'),
+                  ),
+                  trailing: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(getFormatedDateTime(data.time!, 'dd/MM/yyyy')),
+                      Text(getFormatedDateTime(data.time!, 'HH:mm')),
+                    ],
+                  ),
+                  leading: Chip(
+                    backgroundColor:
+                    // (data.alert != null) ??
+                    provider.getAlertColor(data.alert ?? ''),
+                    label: Text(
+                      data.mag.toString(),
+                      style: TextStyle(
+                        shadows: [
+                          Shadow(
+                            offset: Offset(2, 2),
+                            blurRadius: 3,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               );
             },
